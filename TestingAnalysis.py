@@ -18,7 +18,8 @@ import os
 
 # In[184]:
 
-os.getcwd()
+
+file_name_for_images = os.path.realpath("images")
 x = []
 with open("test.csv", "r" ) as f:
     a = [ [ int(dummy) for dummy in line.split() ] for line in f.readlines()] 
@@ -104,7 +105,7 @@ for i in range(len(a)):
         sim[yflipped][x] = [1.,1.,1.]
         
     if(time <= q):
-        os.chdir("/Desktop/Evolutionary-Mutations/images")
+        os.chdir(file_name_for_images)
         print("Saving image... " + str(time) + " of " + str(q))
         plt.imsave('test' + str(time) + '.png', sim, dpi=1000)
         
