@@ -104,7 +104,7 @@ for i in range(len(a)):
         sim[yflipped][x] = [1.,1.,1.]
         
     if(time <= q):
-        os.chdir("/Users/giangarcia/Desktop/Sim/images")
+        os.chdir("/Desktop/Evolutionary-Mutations/images")
         print("Saving image... " + str(time) + " of " + str(q))
         plt.imsave('test' + str(time) + '.png', sim, dpi=1000)
         
