@@ -12,8 +12,8 @@
 using namespace std;
 
 /* global variables */
-int LX = 640;
-int LY = 480;
+int LX = 5;
+int LY = 2;
 string outfilename = "test.csv";
 string numerics = "make.csv";
 
@@ -48,7 +48,7 @@ int modulo(int a, int b){ // shift a into the range [0, b-1] by adding multiples
 /* Create a section where the user can change the amount of populations that will be present.*/
 
 int num_ancestors = 2;
-int shift = LY / num_ancestors;
+int shift = LY / num_ancestors; //use div for scaling
 
 /* Global variables end */
 
@@ -60,13 +60,13 @@ int main(void) {
 
 
 	srand48(time(0));  // seed random number generator using time. Srand needs to run once before drand48 is called to ensure randomness.
-	cout << "Size of the shift: " << shift << endl;
+	
 	vector<vector<site > > lattice = vector<vector<site > >(LX, vector<site>(LY)); // this is one of the many clumsy C++ ways to declare a vector of sites, called "lattice", of dimensions LX by LY.
 
 	// initialization
     vector<vector<int > > ancestors_xy = vector<vector<int > >(0, vector<int>(2)); // initially occupied sites
 	for(int i = 1; i <= num_ancestors; i++){
-		ancestors_xy.push_back({0, i*10});
+		ancestors_xy.push_back({0, LY/(num_ancestors + 1)  });
 	}
 
 
@@ -89,8 +89,26 @@ int main(void) {
     // > > is closing the vector declaration statement. Needs the spacing. NOT STREAM.
 	//cout << "Running... " << endl;
 
-    for (int t = 0; t < tmax ; t++) { // quit when t hits tmax 		// the update step:
+
+    for (int t = 0; t < tmax; t++) { // quit when t hits tmax 		// the update step:
 		cout << "Running..." << t << " out of ~" << LX*LY <<endl; 
+
+		int counter = 0;
+		int counter2 = 0;
+		for(int i = 0; i < frontier.size(); i++){	//Entire Frontier
+			vector<int> temporary_use = frontier[i]; 
+			site my_site = lattice[temporary_use[0]][temporary_use[1]];	
+	 		if(my_site.label == 0){
+			counter++;
+			} else if (my_site.label == 1){
+				counter2++;
+			}
+
+		}
+		cout << "Counter 1: " << counter << " at timestep: " << t << endl;
+		cout << "Counter 2: " << counter2 << " at timestep: " << t << endl;
+
+
 		int random_frontier_index = int(drand48()*frontier.size()); // get A random integer from 0 to (length of frontier - 1)
 		/* I need to save my new coordinate in terms of vector<int> mother_xy. (x,y)? I can completely replace the random frontier mechanism for duplication.			*/
 
