@@ -104,31 +104,59 @@ int main(void) {
 			}
 
 		}
-		//cout << "Counter 1: " << counter << " at timestep: " << t << endl;
-		//cout << "Counter 2: " << counter2 << " at timestep: " << t << endl;
-		int ro = 2;
-		int rp = 1;
-
-		int n = counter;
-		int m = counter2;
-
+		
 		int rtot = (n*ro) + (m*rp);
-		//cout << "The rtot is: " << rtot << endl;
+		cout << "The rtot is: " << rtot << endl;
 
 		int check_equal_to_one = (n*ro)/rtot + (m*rp/rtot); 
-		int rate =  (n*ro)/rtot + (m*rp)/rtot /rtot;
+		int rate =  (n*rp)/rtot;
+
+		//cout << "This should be one --> " << check_equal_to_one << endl;
+		//cout << "The rate of this instance: " << rate << endl;
+
 	    srand((unsigned int)time(NULL));    
-    	int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
+	    int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
+	    cout << "Randomization: " << temp << endl;
+	    if(rate > temp){
+	    	//choose population n
+	    	return 0;
+	    } else {
+	    	//choose population m
+	    	return 1;
+	    }
 
-		cout << "This should be one --> " << check_equal_to_one << endl;
-		cout << "The rate of this instance: " << rate << endl;
-		cout << "Temp rolled: " << temp << endl;
-		cout << " " << endl;
+	    if(rate == 0){
+	    	//rate is subpopulation 0.
+	    	//Randomly pick a cell in this subpopulation.
+			for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
+				vector<int> temporary_use2 = frontier[i]; 
+				site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
+
+				if(searching.label == 0){	//append the xy value to mother for m
+					vector<int> mother_xy = frontier[i];
+					site mother = lattice[mother_xy[0]][mother_xy[1]];
+				} else {
+					continue;
+				}
+			}
+		} else if (rate == 1){
+			for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
+				vector<int> temporary_use2 = frontier[i]; 
+				site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
+
+				if(searching.label == 1){	//append the xy value to mother for m
+					vector<int> mother_xy = frontier[i];
+					site mother = lattice[mother_xy[0]][mother_xy[1]];
+				} else {
+					continue;
+				}
+			}
+		}
+	}
 
 
 
-
-		int random_frontier_index = int(drand48()*frontier.size()); // get A random integer from 0 to (length of frontier - 1)
+		//int random_frontier_index = int(drand48()*frontier.size()); // get A random integer from 0 to (length of frontier - 1)
 		/* I need to save my new coordinate in terms of vector<int> mother_xy. (x,y)? I can completely replace the random frontier mechanism for duplication.			*/
 
 		//cout << "Time at: " << t << ", and the random_frontier_index is: " << random_frontier_index << endl;
