@@ -88,8 +88,7 @@ int main(void) {
 	vector<vector<int > > frontier = ancestors_xy ; // declare "frontier" as a vector of 2-element vectors of integers (x,y), initialized with the ancestors
     // > > is closing the vector declaration statement. Needs the spacing. NOT STREAM.
 	//cout << "Running... " << endl;
-
-
+   	
     for (int t = 0; t < tmax; t++) { // quit when t hits tmax 		// the update step:
 		cout << "Running..." << t << " out of ~" << LX*LY <<endl; 
 
@@ -105,8 +104,28 @@ int main(void) {
 			}
 
 		}
-		cout << "Counter 1: " << counter << " at timestep: " << t << endl;
-		cout << "Counter 2: " << counter2 << " at timestep: " << t << endl;
+		//cout << "Counter 1: " << counter << " at timestep: " << t << endl;
+		//cout << "Counter 2: " << counter2 << " at timestep: " << t << endl;
+		int ro = 2;
+		int rp = 1;
+
+		int n = counter;
+		int m = counter2;
+
+		int rtot = (n*ro) + (m*rp);
+		//cout << "The rtot is: " << rtot << endl;
+
+		int check_equal_to_one = (n*ro)/rtot + (m*rp/rtot); 
+		int rate =  (n*ro)/rtot + (m*rp)/rtot /rtot;
+	    srand((unsigned int)time(NULL));    
+    	int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
+
+		cout << "This should be one --> " << check_equal_to_one << endl;
+		cout << "The rate of this instance: " << rate << endl;
+		cout << "Temp rolled: " << temp << endl;
+		cout << " " << endl;
+
+
 
 
 		int random_frontier_index = int(drand48()*frontier.size()); // get A random integer from 0 to (length of frontier - 1)
