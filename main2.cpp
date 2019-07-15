@@ -104,7 +104,12 @@ int main(void) {
 			}
 
 		}
-		
+		/* Declaration of global variables for gillespie.
+		*/
+		int ro = 2;
+		int rp = 1;
+		int n = counter;
+		int m = counter2;
 		int rtot = (n*ro) + (m*rp);
 		cout << "The rtot is: " << rtot << endl;
 
@@ -134,7 +139,7 @@ int main(void) {
 
 				if(searching.label == 0){	//append the xy value to mother for m
 					vector<int> mother_xy = frontier[i];
-					site mother = lattice[mother_xy[0]][mother_xy[1]];
+					return site mother = lattice[mother_xy[0]][mother_xy[1]];
 				} else {
 					continue;
 				}
@@ -146,7 +151,7 @@ int main(void) {
 
 				if(searching.label == 1){	//append the xy value to mother for m
 					vector<int> mother_xy = frontier[i];
-					site mother = lattice[mother_xy[0]][mother_xy[1]];
+					return site mother = lattice[mother_xy[0]][mother_xy[1]];
 				} else {
 					continue;
 				}
@@ -160,9 +165,9 @@ int main(void) {
 		/* I need to save my new coordinate in terms of vector<int> mother_xy. (x,y)? I can completely replace the random frontier mechanism for duplication.			*/
 
 		//cout << "Time at: " << t << ", and the random_frontier_index is: " << random_frontier_index << endl;
-		vector<int> mother_xy = frontier[random_frontier_index]; // choose a random (x,y) pair in frontier 	//Does not save an index. frontier[] calls it save an x and y value.i
+		//vector<int> mother_xy = frontier[random_frontier_index]; // choose a random (x,y) pair in frontier 	//Does not save an index. frontier[] calls it save an x and y value.i
 
- 		site mother = lattice[mother_xy[0]][mother_xy[1]]; // find the site at that randomly chosen frontier (x,y)
+ 		//site mother = lattice[mother_xy[0]][mother_xy[1]]; // find the site at that randomly chosen frontier (x,y)
 
  		 //The random_frontier_index picks out one number from the index of the frontier and then site mother simply saves 2 values from the function call of random_frontier_index.
 		//cout << "Site mother _xy[0]: " << mother_xy[0] << " " << "and Site mother_xy[1]: " << mother_xy[1] << endl;
