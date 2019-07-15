@@ -10,7 +10,7 @@ int main(){
 	int m = 1;
 
 	
-	for(int i = 0; int i < 10; i++){
+	for(int i = 0; i < 10; i++){
 		int rtot = (n*ro) + (m*rp);
 		cout << "The rtot is: " << rtot << endl;
 
@@ -30,14 +30,61 @@ int main(){
 	    	//choose population m
 	    	return 1;
 	    }
+
 	    if(rate == 0){
 	    	//rate is subpopulation 0.
 	    	//Randomly pick a cell in this subpopulation.
-	    } else if (rate == 1){
-	    	//rate is subpopulation 1
-	   		
-	    }
+			for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
+				vector<int> temporary_use2 = frontier[i]; 
+				site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
 
+				if(searching.label == 0){	//append the xy value to mother for m
+					vector<int> mother_xy = frontier[i];
+					site mother = lattice[mother_xy[0]][mother_xy[1]];
+				} else {
+					continue;
+				}
+			}
+		} else if (rate == 1){
+			for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
+				vector<int> temporary_use2 = frontier[i]; 
+				site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
+
+				if(searching.label == 1){	//append the xy value to mother for m
+					vector<int> mother_xy = frontier[i];
+					site mother = lattice[mother_xy[0]][mother_xy[1]];
+				} else {
+					continue;
+				}
+			}
+		}
 	}
-
 }
+
+/* To choose the subpopulation we iterate through frontier until label is what we want and 
+* in a similar fashion as before we will choose the subpopulation and add it as a mother.
+
+		for(int i = 0; i < frontier.size(); i++){	//Entire Frontier
+			vector<int> temporary_use = frontier[i]; 
+			site my_site = lattice[temporary_use[0]][temporary_use[1]];	
+	 		if(my_site.label == 0){
+			counter++;
+			} else if (my_site.label == 1){
+				counter2++;
+			}
+
+		}
+			vector<int> temporary_use = frontier[i]; 
+			site my_site = lattice[temporary_use[0]][temporary_use[1]];	
+
+
+		vector<int> mother_xy = frontier[random_frontier_index]; // choose a random (x,y) pair in frontier 	//Does not save an index. frontier[] calls it save an x and y value.i
+
+ 		site mother = lattice[mother_xy[0]][mother_xy[1]]; // find the site at that randomly chosen frontier (x,y)
+
+
+
+
+
+
+
