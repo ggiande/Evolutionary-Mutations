@@ -84,7 +84,7 @@ sim = [ [ [1.,1.,1.] for j in range(0, LX) ] for i in range (0, LY) ]
 
 
 print("Note that the saving of images will be out of order.")
-q = 6000 # Number of images that will be saved.
+q = MAX # Number of images that will be saved.
 print("This will take a while :/ ")
 
 for i in range(len(a)):
@@ -104,10 +104,10 @@ for i in range(len(a)):
     if(label == -1 and time <= MAX):
         sim[yflipped][x] = [1.,1.,1.]
         
-    if(time <= q):
-        os.chdir(file_name_for_images)
-        print("Saving image... " + str(time) + " of " + str(q))
-        plt.imsave('test' + str(time) + '.png', sim, dpi=1000)
+    #if(i <= q):
+     #   os.chdir(file_name_for_images)
+      #  print("Saving image... " + str(i) + " of " + str(q))
+       # plt.imsave('test' + str(i) + '.png', sim, dpi=1000)
         
     
 #lx number of columns and ly number of rows.
