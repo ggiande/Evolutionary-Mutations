@@ -129,51 +129,21 @@ int main(void) {
 	    	//choose population m
 	    	return 1;
 	    }
+	    int frontier_index = 0;
+	    for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
+			vector<int> temporary_use2 = frontier[i]; 
+			site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
 
-	    if(rate == 0){
-	    	//rate is subpopulation 0.
-	    	//Randomly pick a cell in this subpopulation.
-			for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
-				vector<int> temporary_use2 = frontier[i]; 
-				site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
-
-				if(searching.label == 0){	//append the xy value to mother for m
-					vector<int> mother_xy = frontier[i];
-					return site mother = lattice[mother_xy[0]][mother_xy[1]];
-				} else {
-					continue;
-				}
-			}
-		} else if (rate == 1){
-			for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
-				vector<int> temporary_use2 = frontier[i]; 
-				site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
-
-				if(searching.label == 1){	//append the xy value to mother for m
-					vector<int> mother_xy = frontier[i];
-					return site mother = lattice[mother_xy[0]][mother_xy[1]];
-				} else {
-					continue;
-				}
+			if(searching.label == 0){	//append the xy value to mother for m
+				frontier_index = i;
+				break;
+			} else {
+				continue;
 			}
 		}
-	}
+		vector<int> mother_xy = frontier[frontier_index];
+		site mother = lattice[mother_xy[0]][mother_xy[1]];
 
-
-
-		//int random_frontier_index = int(drand48()*frontier.size()); // get A random integer from 0 to (length of frontier - 1)
-		/* I need to save my new coordinate in terms of vector<int> mother_xy. (x,y)? I can completely replace the random frontier mechanism for duplication.			*/
-
-		//cout << "Time at: " << t << ", and the random_frontier_index is: " << random_frontier_index << endl;
-		//vector<int> mother_xy = frontier[random_frontier_index]; // choose a random (x,y) pair in frontier 	//Does not save an index. frontier[] calls it save an x and y value.i
-
- 		//site mother = lattice[mother_xy[0]][mother_xy[1]]; // find the site at that randomly chosen frontier (x,y)
-
- 		 //The random_frontier_index picks out one number from the index of the frontier and then site mother simply saves 2 values from the function call of random_frontier_index.
-		//cout << "Site mother _xy[0]: " << mother_xy[0] << " " << "and Site mother_xy[1]: " << mother_xy[1] << endl;
-		
-		//cout << " " << endl; //Just spacing
-		// find the possible daughter sites for this mother, i.e. the nearest neighbors that are not filled
 		
 		vector<vector<int > > possible_daughter_xyvals = vector<vector<int > >(0,vector<int >(2)); // vector of (x,y) pairs with zero elements to start with
 
@@ -212,14 +182,14 @@ int main(void) {
 			frontier.push_back(daughter_xy); // append daughter's (x,y) values to the frontier. It's possible that daughter has no empty neighbors and doesn't belong in frontier, but that's ok, we will catch that with the else statement below if the daughter is chosen as a mother
 
             if (num_possible_daughters == 1){ // we just took away the last empty neighbor of the mother, so delete her from the frontier
-				frontier.erase(frontier.begin()+random_frontier_index); // remember, random_frontier_index is mother's index in frontier
+				frontier.erase(frontier.begin()+frontier_index); // remember, random_frontier_index is mother's index in frontier
 				if (frontier.size() == 0) {
 					cout << "Size of frontier has reached zero." << endl;
 					break; // terminate the loop
 				}
 			}
 		} else { // no empty neighbors were found, so this site does not belong in the frontier
-			frontier.erase(frontier.begin()+random_frontier_index); // remove that element from the frontier
+			frontier.erase(frontier.begin()+frontier_index); // remove that element from the frontier
 			t--; // to avoid incrementing t, we decrement t here to counteract the t++ in the for loop
 
 			if (frontier.size() == 0) {
