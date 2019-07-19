@@ -8,12 +8,10 @@
 #include <iomanip>
 #include <time.h>
 #include <vector>
-	
 using namespace std;
-
 /* global variables */
-int LX = 5;
-int LY = 2;
+int LX = 30;
+int LY = 30;
 string outfilename = "test.csv";
 string numerics = "make.csv";
 
@@ -24,9 +22,9 @@ class site{
 	public:
 		int label = -1; // label for "gene". negative default value indicates "not filled"
 		int timefilled = -1;
-		vector<int > mother = vector<int>(2,-1); // two-element vector "mother" will contain (x,y) of mother.
-												//fill both elements with -1 by default so we will know those are meaningless
-												// until the site is filled
+		vector<int > mother = vector<int>(2,-1); 
+		/* two-element vector "mother" will contain (x,y) of mother. Fill both elements with
+		-1 by default so we will know those are meaningless until the site is filled.  */
 		void fill(int fillLabel, int fillTime, vector<int> fillMother){
 			label = fillLabel;
 			timefilled = fillTime;
@@ -46,7 +44,6 @@ int modulo(int a, int b){ // shift a into the range [0, b-1] by adding multiples
 
 
 /* Create a section where the user can change the amount of populations that will be present.*/
-
 int num_ancestors = 2;
 int shift = LY / num_ancestors; //use div for scaling
 
@@ -56,20 +53,13 @@ int main(void) {
 	cout << "Printing out the number of ancestors, LX and LY into " << numerics << endl;
 	ofstream g(numerics.c_str()); // declare an output stream to print to "numerics"	
 	g << num_ancestors << " " << LX << " " << LY << endl;
-
-
-
 	srand48(time(0));  // seed random number generator using time. Srand needs to run once before drand48 is called to ensure randomness.
-	
 	vector<vector<site > > lattice = vector<vector<site > >(LX, vector<site>(LY)); // this is one of the many clumsy C++ ways to declare a vector of sites, called "lattice", of dimensions LX by LY.
 
-	// initialization
     vector<vector<int > > ancestors_xy = vector<vector<int > >(0, vector<int>(2)); // initially occupied sites
 	for(int i = 1; i <= num_ancestors; i++){
-		ancestors_xy.push_back({0, LY/(num_ancestors + 1)  });
+		ancestors_xy.push_back({0, (LY/(num_ancestors)*i)});
 	}
-
-
 	/* This section prints out the contents of the ancestors_xy vector.
 	cout << "Contents of the vector: " << endl;	
 	for (int i = 0; i < ancestors_xy.size(); i++) {
@@ -80,7 +70,6 @@ int main(void) {
 	cout << "End of the coentents of ancestors_xy vector." << endl;
 	cout << "" << endl;
 	*/
-
 	for (int i = 0; i < ancestors_xy.size(); i++) {
 		lattice[ancestors_xy[i][0]][ancestors_xy[i][1]].fill(i,0,ancestors_xy[i]); // give each initially occupied site a unique label - Element of type site.
 	}
@@ -98,7 +87,7 @@ int main(void) {
 			vector<int> temporary_use = frontier[i]; 
 			site my_site = lattice[temporary_use[0]][temporary_use[1]];	
 	 		if(my_site.label == 0){
-			counter++;
+				counter++;
 			} else if (my_site.label == 1){
 				counter2++;
 			}
@@ -106,45 +95,52 @@ int main(void) {
 		}
 		/* Declaration of global variables for gillespie.
 		*/
-		int ro = 2;
-		int rp = 1;
-		int n = counter;
-		int m = counter2;
-		int rtot = (n*ro) + (m*rp);
+		float ro = 2;	//Setting the bias in each population.
+		float rp = 1;
+		float n = counter;
+		float m = counter2;
+		float rtot = (n*ro) + (m*rp);
 		cout << "The rtot is: " << rtot << endl;
+		cout << "The numer of 0 populations is: " << n << endl;
+		cout << "The number of 1 populations is: " << m << endl;
+		float check_equal_to_one = (n*ro/rtot) + (m*rp/rtot); 
+		float rate =  (n*ro)/rtot;
+		cout << rate << endl;
 
-		int check_equal_to_one = (n*ro)/rtot + (m*rp/rtot); 
-		int rate =  (n*rp)/rtot;
-
-		//cout << "This should be one --> " << check_equal_to_one << endl;
-		//cout << "The rate of this instance: " << rate << endl;
+		cout << "This should be one --> " << check_equal_to_one << endl;
+		//cout << "The rate of thi   s instance: " << float(rate) << endl;
 
 	    srand((unsigned int)time(NULL));    
 	    int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
-	    cout << "Randomization: " << temp << endl;
+	    //cout << "Randomization: " << temp << endl;
+	   	//cout << "Rate: " << rate << endl;	//Rate is always 0.
+	   	cout << " " << endl;
 	    if(rate > temp){
 	    	//choose population n
-	    	return 0;
+	    	//cout << "Choose population n or 0." << endl;
+	    	rate = 0;
 	    } else {
+	    	//cout << "Choose population m or 1." << endl;
 	    	//choose population m
-	    	return 1;
+	    	rate = 1;
 	    }
-	    int frontier_index = 0;
-	    for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
-			vector<int> temporary_use2 = frontier[i]; 
-			site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
 
-			if(searching.label == 0){	//append the xy value to mother for m
-				frontier_index = i;
-				break;
+	    int frontier_index = 0;
+	    for(int a = 0; a < frontier.size(); a++){	//Entire Frontier look for the desired population.
+			vector<int> temporary_use2 = frontier[a]; 
+			site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
+			//cout << "Inside for loop" << endl;
+			if(searching.label == rate){	//append the xy value to mother for m
+				frontier_index = a;
+				//cout << "If statement successul. " << frontier_index << endl;
 			} else {
-				continue;
+				//cout << "Not successul " << i << endl;
+				a++;
 			}
 		}
+
 		vector<int> mother_xy = frontier[frontier_index];
 		site mother = lattice[mother_xy[0]][mother_xy[1]];
-
-		
 		vector<vector<int > > possible_daughter_xyvals = vector<vector<int > >(0,vector<int >(2)); // vector of (x,y) pairs with zero elements to start with
 
 		
@@ -235,13 +231,10 @@ int main(void) {
 
 		}
 	}
-
 	cout << " " << endl;
 	cout << "Counter of 0's: " << counter << endl;
 	*/
-
 	f.close();
-
 	return 0;
 }
 /*
