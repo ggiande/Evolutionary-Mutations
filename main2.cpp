@@ -12,8 +12,8 @@
 using namespace std;
 
 /* global variables */
-int LX = 50;
-int LY = 50;
+int LX = 5;
+int LY = 2;
 string outfilename = "test.csv";
 string numerics = "make.csv";
 
@@ -66,7 +66,7 @@ int main(void) {
 	// initialization
     vector<vector<int > > ancestors_xy = vector<vector<int > >(0, vector<int>(2)); // initially occupied sites
 	for(int i = 1; i <= num_ancestors; i++){
-		ancestors_xy.push_back({0, LY/(num_ancestors + 50)  });
+		ancestors_xy.push_back({0, LY/(num_ancestors + 1)  });
 	}
 
 
@@ -124,23 +124,20 @@ int main(void) {
 	    cout << "Randomization: " << temp << endl;
 	    if(rate > temp){
 	    	//choose population n
-	    	cout << "Choose population n or 0." << endl;
-	    	rate = 0;
+	    	return 0;
 	    } else {
-	    	cout << "Choose population m or 1." << endl;
 	    	//choose population m
-	    	rate = 1;
+	    	return 1;
 	    }
 	    int frontier_index = 0;
 	    for(int i = 0; i < frontier.size(); i++){	//Entire Frontier look for the desired population.
 			vector<int> temporary_use2 = frontier[i]; 
 			site searching = lattice[temporary_use2[0]][temporary_use2[1]];	
-			//cout << "Inside for loop" << endl;
+
 			if(searching.label == 0){	//append the xy value to mother for m
 				frontier_index = i;
-				cout << "If statement successul. " << frontier_index << endl;
+				break;
 			} else {
-				cout << "Not successul " << i << endl;
 				continue;
 			}
 		}

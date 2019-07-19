@@ -16,9 +16,6 @@ import os
 
 # ## Ran the code just to determine the max value in the 3rd index. Unneeded code.
 
-# In[184]:
-
-
 file_name_for_images = os.path.realpath("images")
 x = []
 with open("test.csv", "r" ) as f:
@@ -35,8 +32,6 @@ MAX = int((LX * LY)*.85) #This will act as TEND FROM NOW ON.
 
 #print(MAX)
 
-
-# In[2]:
 
 
 #bg to run a command in the background and fg to return to the process.
@@ -83,9 +78,9 @@ sim = [ [ [1.,1.,1.] for j in range(0, LX) ] for i in range (0, LY) ]
 # In[ ]:
 
 
-print("Note that the saving of images will be out of order.")
+#print("Note that the saving of images will be out of order.")
 q = MAX # Number of images that will be saved.
-print("This will take a while :/ ")
+#print("This will take a while :/ ")
 
 for i in range(len(a)):
     x = a[i][0]
@@ -99,6 +94,7 @@ for i in range(len(a)):
 
     if(time <= MAX):
         rgb = colorsys.hsv_to_rgb(label/num_ancestors, 1 ,1) #(hsv)
+        print(rgb)
         sim[yflipped][x] = rgb
     
     if(label == -1 and time <= MAX):
@@ -116,7 +112,7 @@ for i in range(len(a)):
     
 plt.imshow(sim)
 plt.waitforbuttonpress() 
-print("Done executing the program.")
+#print("Done executing the program.")
 
 # Beneficial Factors
 # ### 1. Initial Conditions - Ancestors should be an entire column
