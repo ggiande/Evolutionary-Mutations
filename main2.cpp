@@ -57,8 +57,9 @@ int main(void) {
 	vector<vector<site > > lattice = vector<vector<site > >(LX, vector<site>(LY)); // this is one of the many clumsy C++ ways to declare a vector of sites, called "lattice", of dimensions LX by LY.
 
     vector<vector<int > > ancestors_xy = vector<vector<int > >(0, vector<int>(2)); // initially occupied sites
-	for(int i = 1; i <= num_ancestors; i++){
-		ancestors_xy.push_back({0, (LY/(num_ancestors)*i)});
+	for(int i = 0; i < num_ancestors; i++){
+		ancestors_xy.push_back({0, (LY/(num_ancestors)*i+1)});
+		cout << "i " << i << endl;
 	}
 	/* This section prints out the contents of the ancestors_xy vector.
 	cout << "Contents of the vector: " << endl;	
@@ -77,14 +78,14 @@ int main(void) {
 	vector<vector<int > > frontier = ancestors_xy ; // declare "frontier" as a vector of 2-element vectors of integers (x,y), initialized with the ancestors
     // > > is closing the vector declaration statement. Needs the spacing. NOT STREAM.
 	//cout << "Running... " << endl;
-   	
-    for (int t = 0; t < tmax; t++) { // quit when t hits tmax 		// the update step:
-		cout << "Running..." << t << " out of ~" << LX*LY <<endl; 
-
+   
+    for (int t = 0; t < tmax; t++) { // quit when t hits tmax-the update step:
+		cout << "Running..." << t << " out of ~" << LX*LY << endl; 
 		int counter = 0;
 		int counter2 = 0;
+
 		for(int i = 0; i < frontier.size(); i++){	//Entire Frontier
-			vector<int> temporary_use = frontier[i]; 
+			vector<int> temporary_use = frontier[i];
 			site my_site = lattice[temporary_use[0]][temporary_use[1]];	
 	 		if(my_site.label == 0){
 				counter++;
@@ -107,8 +108,8 @@ int main(void) {
 		float rate =  (n*ro)/rtot;
 		cout << rate << endl;
 
-		cout << "This should be one --> " << check_equal_to_one << endl;
-		//cout << "The rate of thi   s instance: " << float(rate) << endl;
+		//cout << "This should be one --> " << check_equal_to_one << endl;
+		//cout << "The rate of this instance: " << float(rate) << endl;
 
 	    srand((unsigned int)time(NULL));    
 	    int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
@@ -124,7 +125,7 @@ int main(void) {
 	    	//choose population m
 	    	rate = 1;
 	    }
-
+		//cout << "Checkpoint 2" << endl;
 	    int frontier_index = 0;
 	    for(int a = 0; a < frontier.size(); a++){	//Entire Frontier look for the desired population.
 			vector<int> temporary_use2 = frontier[a]; 
@@ -143,7 +144,6 @@ int main(void) {
 		site mother = lattice[mother_xy[0]][mother_xy[1]];
 		vector<vector<int > > possible_daughter_xyvals = vector<vector<int > >(0,vector<int >(2)); // vector of (x,y) pairs with zero elements to start with
 
-		
         //module leaves only positive remainders.
         for (int i = 0; i < neighbor_sep.size(); i++) {
 			vector<int> neighbor_xy = { modulo(mother_xy[0] + neighbor_sep[i][0], LX), modulo(mother_xy[1] + neighbor_sep[i][1], LY)}; // find xy values of neigbhors by shifting incrementally from random frontier site. Use modulo operation to impose periodic boundary conditions.    Periodic boundaries
@@ -160,23 +160,21 @@ int main(void) {
 		* Choose a population at random and then choose a cell at random that is at the frontier.
 		* Find the probability of that cell suceeding at that tick.
 		*/
-
-			if (num_possible_daughters > 0){
+		if (num_possible_daughters > 0){
 			int random_daughter_index = int(drand48()*num_possible_daughters); // get a random integer from 0 to (length of possible_daughter_xyvals - 1)
 			vector<int> daughter_xy = possible_daughter_xyvals[random_daughter_index];  //Will hold an x and a y.
 			lattice[daughter_xy[0]][daughter_xy[1]].fill(mother.label, t, mother_xy); // copy mother's label into daughter, and record the time and mother's xy values
-            
-            /* Time is a parameter that's being modified by the fill command."
-             
-             void fill(int fillLabel, int fillTime, vector<int> fillMother){
-             label = fillLabel;
-             timefilled = fillTime;
-             mother = fillMother;
-             }
+        
+        /* Time is a parameter that's being modified by the fill command."
+         
+         void fill(int fillLabel, int fillTime, vector<int> fillMother){
+         label = fillLabel;
+         timefilled = fillTime;
+         mother = fillMother;
+         }
              */
             
 			frontier.push_back(daughter_xy); // append daughter's (x,y) values to the frontier. It's possible that daughter has no empty neighbors and doesn't belong in frontier, but that's ok, we will catch that with the else statement below if the daughter is chosen as a mother
-
             if (num_possible_daughters == 1){ // we just took away the last empty neighbor of the mother, so delete her from the frontier
 				frontier.erase(frontier.begin()+frontier_index); // remember, random_frontier_index is mother's index in frontier
 				if (frontier.size() == 0) {
