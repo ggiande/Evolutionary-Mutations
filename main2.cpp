@@ -14,6 +14,7 @@ int LX = 120;
 int LY = 50;
 string outfilename = "test.csv";
 string numerics = "make.csv";
+string data = "figures.csv";
 
 int tmax = LX * LY;  //Catches the program.
 vector<vector<int > > neighbor_sep = {{-1,0}, {1,0}, {0,-1}, {0,1}};
@@ -53,6 +54,11 @@ int main(void) {
 	//cout << "Printing out the number of ancestors, LX and LY into " << numerics << endl;
 	ofstream g(numerics.c_str()); // declare an output stream to print to "numerics"	
 	g << num_ancestors << " " << LX << " " << LY << endl;
+
+	ofstream l(data.c_str());
+	l << "time" << "," << "population1" << "population2" << endl;
+
+
 	srand48(time(0));  // seed random number generator using time. Srand needs to run once before drand48 is called to ensure randomness.
 	vector<vector<site > > lattice = vector<vector<site > >(LX, vector<site>(LY)); // this is one of the many clumsy C++ ways to declare a vector of sites, called "lattice", of dimensions LX by LY.
 
@@ -94,6 +100,15 @@ int main(void) {
 			}
 
 		}
+		/*Begging taking data points at every 100 time steps.*/
+		if(t % 100 == 0){ //if divisible by 100, take data, else skip over this iteration.
+		l << t << "," << counter << "," << counter2 << endl; //Saving time, and rates
+		} else {
+			continue;
+		}
+
+
+
 		/* Declaration of global variables for gillespie.
 		*/
 		float ro = 2;	//Setting the bias in each population.
