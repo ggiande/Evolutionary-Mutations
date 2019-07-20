@@ -18,8 +18,8 @@ echo "Python script executed."
 echo
 echo
 #echo "Compressing images to video."
-cd ~/Desktop/Evolutionary-Mutations/images
+#cd ~/Desktop/Evolutionary-Mutations/images
 #sudo ffmpeg -r 60 -f image2 -start_number 0 -i test%01d.png -vcodec libx264 -crf 25  -pix_fmt yuv444p ../Preview.mov
 echo
 echo
-echo "Completed all processes."
+#echo "Completed all processes."
