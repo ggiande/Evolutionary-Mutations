@@ -10,8 +10,8 @@
 #include <vector>
 using namespace std;
 /* global variables */
-int LX = 30;
-int LY = 30;
+int LX = 120;
+int LY = 50;
 string outfilename = "test.csv";
 string numerics = "make.csv";
 
@@ -50,7 +50,7 @@ int shift = LY / num_ancestors; //use div for scaling
 /* Global variables end */
 
 int main(void) {
-	cout << "Printing out the number of ancestors, LX and LY into " << numerics << endl;
+	//cout << "Printing out the number of ancestors, LX and LY into " << numerics << endl;
 	ofstream g(numerics.c_str()); // declare an output stream to print to "numerics"	
 	g << num_ancestors << " " << LX << " " << LY << endl;
 	srand48(time(0));  // seed random number generator using time. Srand needs to run once before drand48 is called to ensure randomness.
@@ -101,12 +101,12 @@ int main(void) {
 		float n = counter;
 		float m = counter2;
 		float rtot = (n*ro) + (m*rp);
-		cout << "The rtot is: " << rtot << endl;
-		cout << "The numer of 0 populations is: " << n << endl;
-		cout << "The number of 1 populations is: " << m << endl;
+		//cout << "The rtot is: " << rtot << endl;
+		//cout << "The numer of 0 populations is: " << n << endl;
+		//cout << "The number of 1 populations is: " << m << endl;
 		float check_equal_to_one = (n*ro/rtot) + (m*rp/rtot); 
 		float rate =  (n*ro)/rtot;
-		cout << rate << endl;
+		//cout << rate << endl;
 
 		//cout << "This should be one --> " << check_equal_to_one << endl;
 		//cout << "The rate of this instance: " << float(rate) << endl;
@@ -115,7 +115,7 @@ int main(void) {
 	    int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
 	    //cout << "Randomization: " << temp << endl;
 	   	//cout << "Rate: " << rate << endl;	//Rate is always 0.
-	   	cout << " " << endl;
+	   	//cout << " " << endl;
 	    if(rate > temp){
 	    	//choose population n
 	    	//cout << "Choose population n or 0." << endl;
