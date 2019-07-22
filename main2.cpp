@@ -10,10 +10,11 @@
 #include <vector>
 using namespace std;
 /* global variables */
-int LX = 120;
-int LY = 50;
+int LX = 30;
+int LY = 30;
 string outfilename = "test.csv";
 string numerics = "make.csv";
+
 string data = "figures.csv";
 
 int tmax = LX * LY;  //Catches the program.
@@ -56,16 +57,24 @@ int main(void) {
 	g << num_ancestors << " " << LX << " " << LY << endl;
 
 	ofstream l(data.c_str());
-	l << "time" << "," << "population1" << "population2" << endl;
+	l << "time" << "," << "Population1" << "Population2" << endl;
 
 
 	srand48(time(0));  // seed random number generator using time. Srand needs to run once before drand48 is called to ensure randomness.
 	vector<vector<site > > lattice = vector<vector<site > >(LX, vector<site>(LY)); // this is one of the many clumsy C++ ways to declare a vector of sites, called "lattice", of dimensions LX by LY.
 
     vector<vector<int > > ancestors_xy = vector<vector<int > >(0, vector<int>(2)); // initially occupied sites
+	/*
 	for(int i = 0; i < num_ancestors; i++){
-		ancestors_xy.push_back({0, (LY/(num_ancestors)*i+1)});
+		//ancestors_xy.push_back({0, (LY/(num_ancestors)*i+1)});
+
+
 		cout << "i " << i << endl;
+	}
+	*/
+	for(int i = 0; i < LY; i++){
+		ancestors_xy.push_back({0,i});
+
 	}
 	/* This section prints out the contents of the ancestors_xy vector.
 	cout << "Contents of the vector: " << endl;	
@@ -77,15 +86,21 @@ int main(void) {
 	cout << "End of the coentents of ancestors_xy vector." << endl;
 	cout << "" << endl;
 	*/
+
 	for (int i = 0; i < ancestors_xy.size(); i++) {
-		lattice[ancestors_xy[i][0]][ancestors_xy[i][1]].fill(i,0,ancestors_xy[i]); // give each initially occupied site a unique label - Element of type site.
+		if(i < LY/2){
+			lattice[ancestors_xy[i][0]][ancestors_xy[i][1]].fill(1,0,ancestors_xy[i]); 
+		} else {
+			lattice[ancestors_xy[i][0]][ancestors_xy[i][1]].fill(0,0,ancestors_xy[i]); 
+		}
+		//lattice[ancestors_xy[i][0]][ancestors_xy[i][1]].fill(i,0,ancestors_xy[i]); // give each initially occupied site a unique label - Element of type site.
 	}
 
 	vector<vector<int > > frontier = ancestors_xy ; // declare "frontier" as a vector of 2-element vectors of integers (x,y), initialized with the ancestors
     // > > is closing the vector declaration statement. Needs the spacing. NOT STREAM.
 	//cout << "Running... " << endl;
    
-    for (int t = 0; t < tmax; t++) { // quit when t hits tmax-the update step:
+    for (int t = 0; t < tmax + 1; t++) { // quit when t hits tmax-the update step:
 		cout << "Running..." << t << " out of ~" << LX*LY << endl; 
 		int counter = 0;
 		int counter2 = 0;
@@ -101,12 +116,11 @@ int main(void) {
 
 		}
 		/*Begging taking data points at every 100 time steps.*/
-		if(t % 100 == 0){ //if divisible by 100, take data, else skip over this iteration.
+		
+		if(t % 10 == 0){ //if divisible by 100, take data, else skip over this iteration.
 		l << t << "," << counter << "," << counter2 << endl; //Saving time, and rates
-		} else {
-			continue;
 		}
-
+		
 
 
 		/* Declaration of global variables for gillespie.
@@ -126,8 +140,9 @@ int main(void) {
 		//cout << "This should be one --> " << check_equal_to_one << endl;
 		//cout << "The rate of this instance: " << float(rate) << endl;
 
-	    srand((unsigned int)time(NULL));    
-	    int temp = (drand48()*2);  //get a random integer from 0 to (FACTOR NUMBER - 1)
+	    //srand((unsigned int)time(NULL)); 
+	    //srand48(time(0));   
+	    float temp = drand48();  //get a random integer from 0 to (FACTOR NUMBER - 1)
 	    //cout << "Randomization: " << temp << endl;
 	   	//cout << "Rate: " << rate << endl;	//Rate is always 0.
 	   	//cout << " " << endl;
@@ -248,6 +263,8 @@ int main(void) {
 	cout << "Counter of 0's: " << counter << endl;
 	*/
 	f.close();
+	g.close();
+	l.close();
 	return 0;
 }
 /*
