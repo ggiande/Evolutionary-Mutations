@@ -20,7 +20,7 @@ with open("make.csv", "r") as g:
     LY  = b [0][2]
 print("The number of ancestors is: " + str(num_ancestors) + " ,the LX is: " + str(LX) + " ,and the LY is: " + str(LY))
 
-MAX = int((LX * LY)*.85) #This will act as TEND FROM NOW ON.
+MAX = int((LX * LY)*.70) #This will act as TEND FROM NOW ON.
 #MAX = int(LX * LY) #Go to 80-90% of when it is filled up.
 
 #bg to run a command in the background and fg to return to the process.
