@@ -11,9 +11,9 @@ import os
 
 file_name_for_images = os.path.realpath("images")
 x = []
-with open("test.csv", "r" ) as f:
+with open("data.csv", "r" ) as f:
     a = [ [ int(dummy) for dummy in line.split() ] for line in f.readlines()] 
-with open("make.csv", "r") as g:
+with open("globalvars.csv", "r") as g:
     b = [[int(dummy) for dummy in line.split() ] for line in g.readlines()]
     num_ancestors = b[0][0]
     LX = b[0][1]
@@ -46,7 +46,7 @@ for j in range (0, len(a)): #Make an array that's as empty as it needs to be. 0 
 
 plt.figure(figsize = (15, 15))
 #print("Note that the saving of images will be out of order.")
-#q = MAX # Number of images that will be saved.
+q = MAX # Number of images that will be saved.
 #print("This will take a while :/ ")
 sim = [ [ [1.,1.,1.] for j in range(0, LX) ] for i in range (0,LY) ]
 for i in range(len(a)):
@@ -66,11 +66,25 @@ for i in range(len(a)):
     if(label == -1 and time <= MAX):
         sim[yflipped][x] = [1.,1.,1.]
           
-    #if(time <= q):
-     #   os.chdir(file_name_for_images)
-      #  print("Saving image... " + str(time) + " of " + str(q))
-       # plt.imsave('test' + str(time) + '.png', sim, dpi=1000) 
+    if(time % 33 == 0):
+        os.chdir(file_name_for_images)
+        print("Saving image... " + str(time) + " of " + str(q))
+        plt.imsave('test' + str(time) + '.png', sim, dpi=1000) 
         
+#####
+#num=0; for i in *; do mv "$i" "$(printf '%04d' $num).${i#*.}"; ((num++)); done
+
+#sudo ffmpeg -r 60 -f image2 -start_number 0 -i %04d.png -vcodec libx264 -crf 25 -pix_fmt hd720 ../Preview.mov
+
+
+
+
+
+
+
+
+
+
 
 #red =1 , 0 = blue ,-1  -white
 #sim = [ [ [1.,1.,1.] for j in range(0, 50) ] for i in range (0,50) ]
