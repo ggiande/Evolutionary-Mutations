@@ -1,5 +1,5 @@
 //
-// stepstone.cpp
+// stepstone.cpp //CONTROL
 //
 #include <stdio.h>
 #include <math.h>
@@ -9,13 +9,14 @@
 #include <time.h>
 #include <vector>
 using namespace std;
-/* global variables */
-int LX = 30;
-int LY = 30;
-string outfilename = "test.csv";
-string numerics = "make.csv";
 
-string data = "figures.csv";
+/* Global variables */
+int LX = 100;
+int LY = 100;
+
+string outfilename = "data.csv";
+string globalvars = "globalvars.csv";
+string figures = "figures.csv";
 
 int tmax = LX * LY;  //Catches the program.
 vector<vector<int > > neighbor_sep = {{-1,0}, {1,0}, {0,-1}, {0,1}};
@@ -53,11 +54,11 @@ int shift = LY / num_ancestors; //use div for scaling
 
 int main(void) {
 	//cout << "Printing out the number of ancestors, LX and LY into " << numerics << endl;
-	ofstream g(numerics.c_str()); // declare an output stream to print to "numerics"	
+	ofstream g(globalvars.c_str()); // declare an output stream to print to "numerics"	
 	g << num_ancestors << " " << LX << " " << LY << endl;
 
-	ofstream l(data.c_str());
-	l << "time" << "," << "Population1" << "Population2" << endl;
+	ofstream l(figures.c_str());
+	l << "time" << "," << "Population1" << ","<< "Population2" << endl;
 
 
 	srand48(time(0));  // seed random number generator using time. Srand needs to run once before drand48 is called to ensure randomness.
@@ -76,16 +77,6 @@ int main(void) {
 		ancestors_xy.push_back({0,i});
 
 	}
-	/* This section prints out the contents of the ancestors_xy vector.
-	cout << "Contents of the vector: " << endl;	
-	for (int i = 0; i < ancestors_xy.size(); i++) {
-		for (int j = 0; j < ancestors_xy.size(); j++) {
-			std::cout << ancestors_xy[i][j] << ", ";
-		}
-	}
-	cout << "End of the coentents of ancestors_xy vector." << endl;
-	cout << "" << endl;
-	*/
 
 	for (int i = 0; i < ancestors_xy.size(); i++) {
 		if(i < LY/2){
@@ -98,7 +89,7 @@ int main(void) {
 
 	vector<vector<int > > frontier = ancestors_xy ; // declare "frontier" as a vector of 2-element vectors of integers (x,y), initialized with the ancestors
     // > > is closing the vector declaration statement. Needs the spacing. NOT STREAM.
-	//cout << "Running... " << endl;
+
    
     for (int t = 0; t < tmax + 1; t++) { // quit when t hits tmax-the update step:
 		cout << "Running..." << t << " out of ~" << LX*LY << endl; 
@@ -125,7 +116,7 @@ int main(void) {
 
 		/* Declaration of global variables for gillespie.
 		*/
-		float ro = 2;	//Setting the bias in each population.
+		float ro = 1.05;	//Setting the bias in each population.
 		float rp = 1;
 		float n = counter;
 		float m = counter2;
@@ -171,7 +162,10 @@ int main(void) {
 		}
 
 		vector<int> mother_xy = frontier[frontier_index];
+	//GILL 2
 		site mother = lattice[mother_xy[0]][mother_xy[1]];
+	//cout << "Site mother _xy[0]: " << mother_xy[0] << " " << "and Site mother_xy[1]: " << mother_xy[1] << endl;
+
 		vector<vector<int > > possible_daughter_xyvals = vector<vector<int > >(0,vector<int >(2)); // vector of (x,y) pairs with zero elements to start with
 
         //module leaves only positive remainders.
@@ -241,45 +235,12 @@ int main(void) {
 		}
 	}
 	cout << "Size of the frontier: " << frontier.size() << endl;
-
-/* IGNORE —— This section was created to print out the contents of the frontier at tmax. 
-
-	int counter = 0;
-	cout << "Conents of frontier: " << endl;
- 	for (int i = 0; i < frontier.size(); i++) {
- 		cout << endl;
-	    for (int j = 0; j < frontier[i].size(); j++) {
-			std::cout << frontier[i][j] << ", ";
-
-			
-			if(frontier[i][j] == 0){	//searches for 0's in the entire 2dvector
-				counter++;
-			}
-			
-
-		}
-	}
-	cout << " " << endl;
-	cout << "Counter of 0's: " << counter << endl;
-	*/
 	f.close();
 	g.close();
 	l.close();
 	return 0;
 }
-/*
 
-Avoiding the two populations from crashing.
-
-tmax * .9 = 276480 
-Only this number of timesteps will occur. 
-We want to take measurements at 10 different points throughout this.
-div = (tmax * .9)/10  //=27648
-So every 27648 timesteps, we will take a survey of the rates of the number of subpopulations. 
-
-Next step is to design an algorithm that will count the number of rates at the frontier of each subpopulation.
-
-*/
 
 
 
