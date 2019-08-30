@@ -11,8 +11,8 @@
 using namespace std;
 
 /* Global variables */
-int LX = 100;
-int LY = 100;
+int LX = 120;
+int LY = 50;
 
 string outfilename = "data.csv";
 string globalvars = "globalvars.csv";
@@ -112,41 +112,24 @@ int main(void) {
 		l << t << "," << counter << "," << counter2 << endl; //Saving time, and rates
 		}
 		
-
-
-		/* Declaration of global variables for gillespie.
-		*/
+		/* Declaration of global variables for gillespie. */
 		float ro = 1.05;	//Setting the bias in each population.
 		float rp = 1;
 		float n = counter;
 		float m = counter2;
 		float rtot = (n*ro) + (m*rp);
-		//cout << "The rtot is: " << rtot << endl;
-		//cout << "The numer of 0 populations is: " << n << endl;
-		//cout << "The number of 1 populations is: " << m << endl;
 		float check_equal_to_one = (n*ro/rtot) + (m*rp/rtot); 
-		float rate =  (n*ro)/rtot;
-		//cout << rate << endl;
-
-		//cout << "This should be one --> " << check_equal_to_one << endl;
-		//cout << "The rate of this instance: " << float(rate) << endl;
-
-	    //srand((unsigned int)time(NULL)); 
-	    //srand48(time(0));   
+		float rate =  (n*ro)/rtot;  
 	    float temp = drand48();  //get a random integer from 0 to (FACTOR NUMBER - 1)
-	    //cout << "Randomization: " << temp << endl;
-	   	//cout << "Rate: " << rate << endl;	//Rate is always 0.
-	   	//cout << " " << endl;
+
 	    if(rate > temp){
-	    	//choose population n
-	    	//cout << "Choose population n or 0." << endl;
+
+	    	//cout << "Choose population N or 0 or Red." << endl;
 	    	rate = 0;
 	    } else {
-	    	//cout << "Choose population m or 1." << endl;
-	    	//choose population m
+	    	//cout << "Choose population M or 1 or Blue." << endl;
 	    	rate = 1;
 	    }
-		//cout << "Checkpoint 2" << endl;
 	    int frontier_index = 0;
 	    for(int a = 0; a < frontier.size(); a++){	//Entire Frontier look for the desired population.
 			vector<int> temporary_use2 = frontier[a]; 
@@ -162,9 +145,7 @@ int main(void) {
 		}
 
 		vector<int> mother_xy = frontier[frontier_index];
-	//GILL 2
 		site mother = lattice[mother_xy[0]][mother_xy[1]];
-	//cout << "Site mother _xy[0]: " << mother_xy[0] << " " << "and Site mother_xy[1]: " << mother_xy[1] << endl;
 
 		vector<vector<int > > possible_daughter_xyvals = vector<vector<int > >(0,vector<int >(2)); // vector of (x,y) pairs with zero elements to start with
 
@@ -217,18 +198,18 @@ int main(void) {
 		}
 	}
 
-	/* This part of the program begins to save all the contents compiled onto an outfile.
-	* Note that this runs once timfilled = tmax. */
 
-	cout << "Done." << endl;
 
-	cout << "Printing results to " << outfilename << endl;
+	//cout << "Done." << endl;
+
+	//cout << "Printing results to " << outfilename << endl;
 
 	ofstream f(outfilename.c_str()); // declare an output stream to print to "outfilename"
 
 	//name of the class is site. class name  = lattice[i][j] -> What is being accessed.
+	//f << "X" << "," << "Y" << "," << "Label" << "," << "Time" << "," << "MotherX" << "," << "MotherY" << endl;
 	for (int i = 0; i < lattice.size(); i++){
-		for (int j = 0; j<lattice[i].size(); j++){
+		for (int j = 0; j < lattice[i].size(); j++){
 			site thisSite = lattice[i][j];
 			f << i << " " << j << " " << thisSite.label << " " << thisSite.timefilled << " " << thisSite.mother[0] << " " << thisSite.mother[1] << endl;
 

@@ -4,17 +4,9 @@ g++ -std=c++11 main2.cpp -o stepstone2.out
 
 num=0; for i in *; do mv "$i" "$(printf '%04d' $num).${i#*.}"; ((num++)); done
 
-sudo ffmpeg -r 60 -f image2 -start_number 0 -i %04d.png -vcodec libx264 -crf 25 -pix_fmt hd720 ../Preview.mov
+sudo ffmpeg -r 5 -f image2 -start_number 0 -i %04d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p ../Preview.mov
 
 //ffmpeg -framerate $1 -pattern_type glob -i 'img*.png' -c:v libx264 -r $1 -pix_fmt yuv420p img.mov
-//random_frontier_index = 9 
-//frontier[9] = { 2, 17 }
-//lattice[2][17]
-//site my_site = lattice[2][17]
-//my_site.label
-
-
-
 
 
 if(time <= q):
